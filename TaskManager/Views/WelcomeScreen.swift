@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WelcomeScreen: View {
     private let imageURL: String = "https://d3ueqtv14wizl1.cloudfront.net/Essay_introduction_generator_1a830841e4.png"
+    
     var body: some View {
         VStack {
             Spacer()
@@ -37,7 +38,10 @@ struct WelcomeScreen: View {
             
             Spacer()
             
-            NavigationLink(destination: HomeScreen()) {
+            NavigationLink {
+                LoginScreen()
+                    .navigationBarBackButtonHidden()
+            } label: {
                 HStack {
                     Text("Let’s Start")
                         .font(.headline)

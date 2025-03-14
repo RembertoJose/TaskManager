@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TaskCard: View {
+struct CurrentTaskCard: View {
     var title: String
     var category: String
     var progress: CGFloat
@@ -35,5 +35,5 @@ struct TaskCard: View {
 }
 
 #Preview {
-    TaskCard(title: "Test Task", category: "Test Category", progress: 30, color: .blue)
+    CurrentTaskCard(title: "Test Task", category: "Test Category", progress: 30, color: .blue)
 }
