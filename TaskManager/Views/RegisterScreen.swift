@@ -62,7 +62,9 @@ struct RegisterScreen: View {
             
             Button(action: {
                 viewModel.register()
-                isShowHomeScreen = true
+                if viewModel.validate() {
+                    isShowHomeScreen = true
+                }
             }) {
                 Text("Sign Up")
                     .font(.headline)
@@ -76,6 +78,7 @@ struct RegisterScreen: View {
                 HomeScreen()
                     .navigationBarBackButtonHidden()
             }
+            .padding(.top, 20)
             
             NavigationLink {
                 LoginScreen()

@@ -18,9 +18,7 @@ class RegisterViewModel: ObservableObject {
     init() {}
     
     func register() {
-        guard validate() else {
-            return
-        }
+        guard validate() else { return }
         
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             guard let userId = result?.user.uid else {
@@ -41,22 +39,14 @@ class RegisterViewModel: ObservableObject {
             .setData(try! newUser.asDictionary())
     }
     
-    private func validate() -> Bool {
+    func validate() -> Bool {
         guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !confirmPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return false
         }
         
-        guard email.contains("@") && email.contains(".") else {
-            return false
-        }
-        
-        guard password.count >= 8 else {
-            return false
-        }
-        
-        guard password == confirmPassword else {
-            return false
-        }
+        guard email.contains("@") && email.contains(".") else { return false }
+        guard password.count >= 8 else { return false }
+        guard password == confirmPassword else { return false }
         
         return true
     }

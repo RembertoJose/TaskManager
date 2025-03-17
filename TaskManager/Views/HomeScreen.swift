@@ -8,9 +8,21 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @State private var isAddingProject = false
+    @StateObject var viewModel = HomeViewModel()
+    @State private var isAddingProject: Bool = false
+    @State private var isShowLoginScreen: Bool = false
     
     var body: some View {
+        if !viewModel.currentUserId.isEmpty {
+            homeView
+        } else {
+            LoginScreen()
+        }
+        
+    }
+    
+    @ViewBuilder
+    var homeView: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
@@ -34,11 +46,19 @@ struct HomeScreen: View {
                         
                         Spacer()
                         
-                        Image(systemName: "bell.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundColor(.purple)
-                            .frame(width: 25, height: 25)
+                        Button {
+                            viewModel.signOut()
+                        } label: {
+                            Image(systemName: "rectangle.portrait.and.arrow.right")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundColor(.purple)
+                                .frame(width: 25, height: 25)
+                        }
+                        .navigationDestination(isPresented: $isShowLoginScreen) {
+                            LoginScreen()
+                                .navigationBarBackButtonHidden()
+                        }
                     }
                     .padding(.horizontal)
                     

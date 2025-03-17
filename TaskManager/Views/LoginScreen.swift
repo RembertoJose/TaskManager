@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @StateObject var viewModel = LoginViewModel()
+    @State private var isShowHomeScreen: Bool = false
     
     var body: some View {
         VStack {
@@ -35,23 +35,30 @@ struct LoginScreen: View {
                 .padding(.bottom, 20)
             
             VStack(spacing: 15) {
-                TextField("Email", text: $email)
+                TextField("Email", text: $viewModel.email)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .autocapitalization(.none)
                 
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $viewModel.password)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
+                
+                if !viewModel.errorMessage.isEmpty {
+                    Text(viewModel.errorMessage)
+                        .foregroundColor(.red)
+                }
             }
             .padding(.horizontal, 20)
             
-            NavigationLink {
-                HomeScreen()
-                    .navigationBarBackButtonHidden()
-            } label: {
+            Button(action: {
+                viewModel.login()
+                if viewModel.validate() && viewModel.isSignedIn {
+                    isShowHomeScreen = true
+                }
+            }) {
                 Text("Log In")
                     .font(.headline)
                     .foregroundColor(.white)
@@ -61,7 +68,11 @@ struct LoginScreen: View {
                     .cornerRadius(15)
                     .buttonStyle(PlainButtonStyle())
             }
-            .padding(.top, 25)
+            .navigationDestination(isPresented: $isShowHomeScreen) {
+                HomeScreen()
+                    .navigationBarBackButtonHidden()
+            }
+            .padding(.top, 20)
             
             NavigationLink {
                 RegisterScreen()
