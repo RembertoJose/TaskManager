@@ -9,6 +9,7 @@ import Foundation
 import FirebaseAuth
 
 class HomeViewModel: ObservableObject {
+    
     @Published var currentUserId: String = ""
     private var handler: AuthStateDidChangeListenerHandle?
 

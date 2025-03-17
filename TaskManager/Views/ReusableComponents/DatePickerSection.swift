@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DatePickerSection: View {
     @State var isDatePickerPresented = false
-    @State var date: Date
+    @Binding var date: Date
     var isStartDate: Bool
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -62,5 +62,5 @@ struct DatePickerSection: View {
 }
 
 #Preview {
-    DatePickerSection(date: Date(), isStartDate: true)
+    DatePickerSection(date: .constant(Date()), isStartDate: true)
 }

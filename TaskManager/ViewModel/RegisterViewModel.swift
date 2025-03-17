@@ -10,6 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class RegisterViewModel: ObservableObject {
+    
     @Published var name: String = ""
     @Published var email: String = ""
     @Published var password: String = ""
@@ -30,7 +31,7 @@ class RegisterViewModel: ObservableObject {
     }
     
     private func insertUserRecord(id: String) {
-        let newUser = User(id: id, name: name, email: email, joined: Date().timeIntervalSince1970)
+        let newUser = UserModel(id: id, name: name, email: email, joined: Date().timeIntervalSince1970)
         
         let db = Firestore.firestore()
         

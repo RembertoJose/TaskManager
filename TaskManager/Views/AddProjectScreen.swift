@@ -9,12 +9,8 @@ import SwiftUI
 
 struct AddProjectScreen: View {
     @Environment(\.presentationMode) var presentationMode
-    @State private var projectName = ""
-    @State private var description = ""
-    @State private var startDate = Date()
-    @State private var endDate = Date()
-    @State private var selectedTaskGroup = "Work"
-    @State private var isEndDatePickerPresented = false
+    
+    @StateObject var viewModel = AddProjectViewModel()
     
     var body: some View {
         VStack {
@@ -43,9 +39,10 @@ struct AddProjectScreen: View {
                 VStack(alignment: .leading, spacing: 16) {
                     
                     Menu {
-                        Button("Work") { selectedTaskGroup = "Work" }
-                        Button("Personal") { selectedTaskGroup = "Personal" }
-                        Button("Others") { selectedTaskGroup = "Others" }
+                        Button("Work") { viewModel.taskGroup = .work }
+                        Button("Personal") { viewModel.taskGroup = .personal }
+                        Button("Home") { viewModel.taskGroup = .home }
+                        Button("Others") { viewModel.taskGroup = .others }
                     } label: {
                         HStack {
                             Image(systemName: "folder.fill")
@@ -54,7 +51,7 @@ struct AddProjectScreen: View {
                                 .font(.body)
                                 .foregroundColor(.black)
                             Spacer()
-                            Text(selectedTaskGroup)
+                            Text(viewModel.taskGroup.rawValue)
                                 .fontWeight(.bold)
                                 .foregroundColor(.black)
                             Image(systemName: "chevron.down")
@@ -69,7 +66,7 @@ struct AddProjectScreen: View {
                         Text("Project Name")
                             .font(.caption)
                             .foregroundColor(.gray)
-                        TextField("Enter project name", text: $projectName)
+                        TextField("Enter project name", text: $viewModel.projectTitle)
                             .padding()
                             .background(Color(UIColor.systemGray6))
                             .cornerRadius(15)
@@ -79,7 +76,7 @@ struct AddProjectScreen: View {
                         Text("Description")
                             .font(.caption)
                             .foregroundColor(.gray)
-                        TextEditor(text: $description)
+                        TextEditor(text: $viewModel.projectDescription)
                             .frame(height: 100)
                             .padding()
                             .scrollContentBackground(.hidden)
@@ -87,11 +84,21 @@ struct AddProjectScreen: View {
                             .cornerRadius(15)
                     }
                     
-                    DatePickerSection(date: startDate, isStartDate: true)
-                    DatePickerSection(date: endDate, isStartDate: false)
+                    DatePickerSection(date: $viewModel.startDate, isStartDate: true)
+                    DatePickerSection(date: $viewModel.endDate, isStartDate: false)
+                    
+                    if !viewModel.errorMessage.isEmpty {
+                        Text(viewModel.errorMessage)
+                            .foregroundColor(.red)
+                    }
                     
                     Button(action: {
-                        // Add project logic
+                        if viewModel.canSave {
+                            viewModel.save()
+                            presentationMode.wrappedValue.dismiss()
+                        } else {
+                            
+                        }
                     }) {
                         Text("Add Project")
                             .font(.headline)

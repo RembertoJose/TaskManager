@@ -9,15 +9,8 @@ import Foundation
 
 extension Encodable {
     func asDictionary() throws -> [String: Any] {
-        guard let data = try? JSONEncoder().encode(self) else {
-            return [:]
-        }
+        guard let data = try? JSONEncoder().encode(self) else { return [:] }
         
-        do {
-            let json = (try? JSONSerialization.jsonObject(with: data) as? [String: Any]) ?? [:]
-            return json
-        } catch {
-            return [:]
-        }
+        return (try? JSONSerialization.jsonObject(with: data) as? [String: Any]) ?? [:]
     }
 }
