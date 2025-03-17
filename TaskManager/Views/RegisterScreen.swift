@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct RegisterScreen: View {
-    @State private var name: String = ""
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var confirmPassword: String = ""
+
+    @StateObject var viewModel = RegisterViewModel()
+    @State private var isShowHomeScreen: Bool = false
     
     var body: some View {
         VStack {
@@ -37,34 +36,34 @@ struct RegisterScreen: View {
                 .padding(.bottom, 20)
             
             VStack(spacing: 15) {
-                TextField("Full Name", text: $name)
+                TextField("Full Name", text: $viewModel.name)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .autocapitalization(.words)
                 
-                TextField("Email", text: $email)
+                TextField("Email", text: $viewModel.email)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .autocapitalization(.none)
                 
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $viewModel.password)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                 
-                SecureField("Confirm Password", text: $confirmPassword)
+                SecureField("Confirm Password", text: $viewModel.confirmPassword)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
             }
             .padding(.horizontal, 20)
             
-            NavigationLink {
-                HomeScreen()
-                    .navigationBarBackButtonHidden()
-            } label: {
+            Button(action: {
+                viewModel.register()
+                isShowHomeScreen = true
+            }) {
                 Text("Sign Up")
                     .font(.headline)
                     .foregroundColor(.white)
@@ -72,9 +71,11 @@ struct RegisterScreen: View {
                     .padding()
                     .background(Color.purple)
                     .cornerRadius(15)
-                    .buttonStyle(PlainButtonStyle())
             }
-            .padding(.top, 25)
+            .navigationDestination(isPresented: $isShowHomeScreen) {
+                HomeScreen()
+                    .navigationBarBackButtonHidden()
+            }
             
             NavigationLink {
                 LoginScreen()
