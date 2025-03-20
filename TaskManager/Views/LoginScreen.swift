@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    @StateObject var viewModel = LoginViewModel()
+    @StateObject var loginViewModel = LoginViewModel()
     @State private var isShowHomeScreen: Bool = false
     
     var body: some View {
@@ -35,27 +35,27 @@ struct LoginScreen: View {
                 .padding(.bottom, 20)
             
             VStack(spacing: 15) {
-                TextField("Email", text: $viewModel.email)
+                TextField("Email", text: $loginViewModel.email)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .autocapitalization(.none)
                 
-                SecureField("Password", text: $viewModel.password)
+                SecureField("Password", text: $loginViewModel.password)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                 
-                if !viewModel.errorMessage.isEmpty {
-                    Text(viewModel.errorMessage)
+                if !loginViewModel.errorMessage.isEmpty {
+                    Text(loginViewModel.errorMessage)
                         .foregroundColor(.red)
                 }
             }
             .padding(.horizontal, 20)
             
             Button(action: {
-                viewModel.login()
-                if viewModel.validate() && viewModel.isSignedIn {
+                loginViewModel.login()
+                if loginViewModel.validate(), loginViewModel.logginSuccess  {
                     isShowHomeScreen = true
                 }
             }) {

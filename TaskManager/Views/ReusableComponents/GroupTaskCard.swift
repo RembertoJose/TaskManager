@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GroupTaskCard: View {
-    var title: String
+    var title: TaskGroup
     var taskCount: Int
     var progress: CGFloat
     var color: Color
@@ -16,7 +16,7 @@ struct GroupTaskCard: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(title)
+                Text("\(title.rawValue) Project")
                     .font(.headline)
                     .foregroundColor(.black)
                 
@@ -54,5 +54,5 @@ struct GroupTaskCard: View {
 }
 
 #Preview {
-    GroupTaskCard(title: "Test Task", taskCount: 2, progress: 0.23, color: .blue)
+    GroupTaskCard(title: .home, taskCount: 2, progress: 0.23, color: .blue)
 }

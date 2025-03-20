@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WelcomeScreen: View {
     private let imageURL: String = "https://d3ueqtv14wizl1.cloudfront.net/Essay_introduction_generator_1a830841e4.png"
+    @StateObject private var welcomeViewModel = WelcomeViewModel()
     
     var body: some View {
         VStack {
@@ -39,8 +40,13 @@ struct WelcomeScreen: View {
             Spacer()
             
             NavigationLink {
-                LoginScreen()
-                    .navigationBarBackButtonHidden()
+                if welcomeViewModel.isSignedIn, !welcomeViewModel.currentUserId.isEmpty {
+                    HomeScreen()
+                        .navigationBarBackButtonHidden()
+                } else {
+                    LoginScreen()
+                        .navigationBarBackButtonHidden()
+                }
             } label: {
                 HStack {
                     Text("Let’s Start")

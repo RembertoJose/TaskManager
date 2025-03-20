@@ -38,7 +38,7 @@ class LoginViewModel: ObservableObject {
         return true
     }
     
-    public var isSignedIn: Bool {
+    public var logginSuccess: Bool {
         if Auth.auth().currentUser != nil {
             return true
         } else {

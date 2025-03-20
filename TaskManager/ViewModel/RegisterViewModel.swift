@@ -35,9 +35,7 @@ class RegisterViewModel: ObservableObject {
         
         let db = Firestore.firestore()
         
-        db.collection("users")
-            .document(id)
-            .setData(try! newUser.asDictionary())
+        db.collection("users").document(id).setData(try! newUser.asDictionary())
     }
     
     func validate() -> Bool {

@@ -16,7 +16,8 @@ struct NavigationBar: View {
             HStack(alignment: .center) {
                 
                 NavigationLink {
-                    //
+                    HomeScreen()
+                        .navigationBarBackButtonHidden()
                 } label: {
                     Image(systemName: "house")
                         .foregroundColor(.gray)
@@ -59,7 +60,8 @@ struct NavigationBar: View {
                 Spacer()
                 
                 NavigationLink {
-                    //
+                    ProfileScreen()
+                        .navigationBarBackButtonHidden()
                 } label: {
                     Image(systemName: "person.2")
                         .foregroundColor(.gray)

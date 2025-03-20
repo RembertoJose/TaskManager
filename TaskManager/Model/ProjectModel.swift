@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TaskGroup: String, Codable {
+enum TaskGroup: String, Codable, CaseIterable {
     case work = "Work"
     case personal = "Personal"
     case home = "Home"

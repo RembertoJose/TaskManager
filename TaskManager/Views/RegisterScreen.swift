@@ -9,7 +9,8 @@ import SwiftUI
 
 struct RegisterScreen: View {
 
-    @StateObject var viewModel = RegisterViewModel()
+    @StateObject var registerViewModel = RegisterViewModel()
+    @StateObject private var profileViewModel = ProfileDataViewModel.shared
     @State private var isShowHomeScreen: Bool = false
     
     var body: some View {
@@ -36,24 +37,24 @@ struct RegisterScreen: View {
                 .padding(.bottom, 20)
             
             VStack(spacing: 15) {
-                TextField("Full Name", text: $viewModel.name)
+                TextField("Full Name", text: $registerViewModel.name)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .autocapitalization(.words)
                 
-                TextField("Email", text: $viewModel.email)
+                TextField("Email", text: $registerViewModel.email)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .autocapitalization(.none)
                 
-                SecureField("Password", text: $viewModel.password)
+                SecureField("Password", text: $registerViewModel.password)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                 
-                SecureField("Confirm Password", text: $viewModel.confirmPassword)
+                SecureField("Confirm Password", text: $registerViewModel.confirmPassword)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
@@ -61,8 +62,8 @@ struct RegisterScreen: View {
             .padding(.horizontal, 20)
             
             Button(action: {
-                viewModel.register()
-                if viewModel.validate() {
+                registerViewModel.register()
+                if registerViewModel.validate() {
                     isShowHomeScreen = true
                 }
             }) {
@@ -77,6 +78,7 @@ struct RegisterScreen: View {
             .navigationDestination(isPresented: $isShowHomeScreen) {
                 HomeScreen()
                     .navigationBarBackButtonHidden()
+                    .environmentObject(profileViewModel)
             }
             .padding(.top, 20)
             

@@ -6,15 +6,23 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct HomeScreen: View {
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject var homeViewModel = HomeViewModel()
+    @StateObject var profileViewModel = ProfileDataViewModel.shared
+    @StateObject var projectViewModel = ProjectDataViewModel.shared
     @State private var isAddingProject: Bool = false
     @State private var isShowLoginScreen: Bool = false
+    let colors: [Color] = [.orange, .blue, .green, .purple, .red]
     
     var body: some View {
-        if !viewModel.currentUserId.isEmpty {
+        if !homeViewModel.currentUserId.isEmpty {
             homeView
+                .onAppear {
+                    profileViewModel.fetchUser()
+                    projectViewModel.fetchProjectData()
+                }
         } else {
             LoginScreen()
         }
@@ -26,7 +34,6 @@ struct HomeScreen: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-
                     HStack(alignment: .center) {
                         Image(systemName: "person.circle.fill")
                             .resizable()
@@ -39,7 +46,7 @@ struct HomeScreen: View {
                                 .font(.caption)
                                 .foregroundColor(.gray)
                             
-                            Text("Livia Vaccaro")
+                            Text("\(profileViewModel.user?.name ?? "Guest")")
                                 .font(.title3)
                                 .fontWeight(.bold)
                         }
@@ -47,7 +54,7 @@ struct HomeScreen: View {
                         Spacer()
                         
                         Button {
-                            viewModel.signOut()
+                            homeViewModel.signOut()
                         } label: {
                             Image(systemName: "rectangle.portrait.and.arrow.right")
                                 .resizable()
@@ -64,30 +71,32 @@ struct HomeScreen: View {
                     
                     TodayTaskCard(titleText: "Your todays's task \nalmost done!", buttonText: "View Task", progress: 0.85)
                     
-                    Text("In Progress  6")
+                    Text("In Progress \(projectViewModel.projects?.count ?? 0)")
                         .font(.headline)
                         .padding(.horizontal)
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            CurrentTaskCard(title: "Grocery shopping app design", category: "Office Project", progress: 0.4, color: .blue)
-                            CurrentTaskCard(title: "Uber Eats redesign challenge", category: "Personal Project", progress: 0.2, color: .orange)
-                            CurrentTaskCard(title: "American Airline Mock Data", category: "Personal Project", progress: 0.7, color: .blue)
+                            ForEach(projectViewModel.projects ?? [], id: \.id) { project in
+                                CurrentTaskCard(title: project.projectName, category: project.taskGroup, progress: Double.random(in: 0.0...0.99), color: colors.randomElement() ?? .gray)
+                            }
                         }
                         .padding()
                     }
                     
-                    Text("Task Groups  4")
+                    Text("Task Groups 4")
                         .font(.headline)
                         .padding(.horizontal)
                     
                     VStack {
-                        GroupTaskCard(title: "Office Project", taskCount: 23, progress: 0.7, color: .pink)
-                        GroupTaskCard(title: "Personal Project", taskCount: 30, progress: 0.52, color: .purple)
-                        GroupTaskCard(title: "Daily Study", taskCount: 30, progress: 0.87, color: .orange)
+                        ForEach(TaskGroup.allCases, id: \.self) { category in
+                            if let projects = projectViewModel.groupedProjects[category] {
+                                if !projects.isEmpty {
+                                    GroupTaskCard(title: category, taskCount: projects.count, progress: Double.random(in: 0.0...0.99), color: colors.randomElement() ?? .gray)
+                                }
+                            }
+                        }
                     }
                     .padding(.horizontal)
-                    
-                    Spacer()
                 }
             }
             .safeAreaInset(edge: .bottom) {

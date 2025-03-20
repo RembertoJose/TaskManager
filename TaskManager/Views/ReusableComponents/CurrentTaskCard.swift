@@ -9,13 +9,13 @@ import SwiftUI
 
 struct CurrentTaskCard: View {
     var title: String
-    var category: String
+    var category: TaskGroup
     var progress: CGFloat
     var color: Color
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(category)
+            Text("\(category.rawValue)")
                 .font(.caption)
                 .foregroundColor(.gray)
             
@@ -35,5 +35,5 @@ struct CurrentTaskCard: View {
 }
 
 #Preview {
-    CurrentTaskCard(title: "Test Task", category: "Test Category", progress: 30, color: .blue)
+    CurrentTaskCard(title: "Test Task", category: .home, progress: 30, color: .blue)
 }
