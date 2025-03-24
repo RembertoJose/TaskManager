@@ -69,7 +69,7 @@ struct LoginScreen: View {
                     .buttonStyle(PlainButtonStyle())
             }
             .navigationDestination(isPresented: $isShowHomeScreen) {
-                HomeScreen()
+                MainTabContainer(selectedTab: .home)
                     .navigationBarBackButtonHidden()
             }
             .padding(.top, 20)

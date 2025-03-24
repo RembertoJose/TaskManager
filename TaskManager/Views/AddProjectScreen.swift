@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AddProjectScreen: View {
     @Environment(\.presentationMode) var presentationMode
-    
     @StateObject var viewModel = AddProjectViewModel()
     
     var body: some View {
