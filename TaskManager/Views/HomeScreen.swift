@@ -98,14 +98,8 @@ struct HomeScreen: View {
                     }
                     .padding(.horizontal)
                 }
-            }
-            .safeAreaInset(edge: .bottom) {
-                NavigationBar(isAddingProject: $isAddingProject)
-            }
-            .navigationTitle("Home")
-            .navigationBarHidden(true)
-            .fullScreenCover(isPresented: $isAddingProject) {
-                AddProjectScreen()
+                
+                Spacer()
             }
         }
     }

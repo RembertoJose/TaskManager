@@ -14,6 +14,7 @@ class ProfileDataViewModel: ObservableObject {
     static let shared = ProfileDataViewModel()
     @Published var user: UserModel? = nil
     @Published var userId: String = ""
+    @Published var isProfile: Bool = false
     
     private init() {}
     
@@ -38,6 +39,7 @@ class ProfileDataViewModel: ObservableObject {
     
     func logout() {
         do {
+            isProfile = true
             try Auth.auth().signOut()
         } catch {
             print("Error signing out: \(error)")

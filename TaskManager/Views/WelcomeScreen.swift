@@ -41,7 +41,7 @@ struct WelcomeScreen: View {
             
             NavigationLink {
                 if welcomeViewModel.isSignedIn, !welcomeViewModel.currentUserId.isEmpty {
-                    HomeScreen()
+                    MainTabContainer()
                         .navigationBarBackButtonHidden()
                 } else {
                     LoginScreen()

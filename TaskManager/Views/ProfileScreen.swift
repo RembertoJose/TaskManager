@@ -8,21 +8,11 @@
 import SwiftUI
 
 struct ProfileScreen: View {
-    @Environment(\.presentationMode) var presentationMode
     @StateObject var profileViewModel = ProfileDataViewModel.shared
-    @State private var isProfile: Bool = false
+    
     
     var body: some View {
         HStack {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }) {
-                Image(systemName: "arrowshape.turn.up.backward.fill")
-                    .foregroundColor(.black)
-            }
-            
-            Spacer()
-            
             Text("Settings")
                 .font(.title3)
                 .fontWeight(.bold)
@@ -84,8 +74,9 @@ struct ProfileScreen: View {
                         .background(Color.red)
                         .cornerRadius(15)
                 }
-                .navigationDestination(isPresented: .constant(true), destination: {
+                .navigationDestination(isPresented: $profileViewModel.isProfile, destination: {
                     LoginScreen()
+                        .navigationBarBackButtonHidden()
                 })
                 .padding(.top, 10)
 
@@ -95,14 +86,6 @@ struct ProfileScreen: View {
                 LinearGradient(gradient: Gradient(colors: [Color.white, Color.purple.opacity(0.1)]), startPoint: .top, endPoint: .bottom)
                     .edgesIgnoringSafeArea(.all)
             )
-        }
-        .safeAreaInset(edge: .bottom) {
-            NavigationBar(isAddingProject: $isProfile)
-        }
-        .navigationTitle("Profile")
-        .navigationBarHidden(true)
-        .fullScreenCover(isPresented: $isProfile) {
-            ProfileScreen()
         }
     }
 }

@@ -7,17 +7,20 @@
 
 import SwiftUI
 
+enum Tab {
+    case home, calendar, add, documents, profile
+}
+
 struct NavigationBar: View {
-    @Binding var isAddingProject: Bool
+    @Binding var selectedTab: Tab
     
     var body: some View {
         VStack {
             Spacer()
             HStack(alignment: .center) {
                 
-                NavigationLink {
-                    HomeScreen()
-                        .navigationBarBackButtonHidden()
+                Button {
+                    selectedTab = .home
                 } label: {
                     Image(systemName: "house")
                         .foregroundColor(.gray)
@@ -26,8 +29,8 @@ struct NavigationBar: View {
                 
                 Spacer()
                 
-                NavigationLink {
-                    //
+                Button {
+                    selectedTab = .calendar
                 } label: {
                     Image(systemName: "calendar")
                         .foregroundColor(.gray)
@@ -37,7 +40,7 @@ struct NavigationBar: View {
                 Spacer()
                 
                 Button {
-                    isAddingProject = true
+                    selectedTab = .add
                 } label: {
                     Image(systemName: "plus")
                         .foregroundColor(.white)
@@ -49,8 +52,8 @@ struct NavigationBar: View {
                 
                 Spacer()
                 
-                NavigationLink {
-                    //
+                Button {
+                    selectedTab = .documents
                 } label: {
                     Image(systemName: "text.page")
                         .foregroundColor(.gray)
@@ -59,9 +62,8 @@ struct NavigationBar: View {
                 
                 Spacer()
                 
-                NavigationLink {
-                    ProfileScreen()
-                        .navigationBarBackButtonHidden()
+                Button {
+                    selectedTab = .profile
                 } label: {
                     Image(systemName: "person.2")
                         .foregroundColor(.gray)
@@ -78,5 +80,5 @@ struct NavigationBar: View {
     }
 }
 #Preview {
-    NavigationBar(isAddingProject: .constant(true))
+    NavigationBar(selectedTab: .constant(.home))
 }

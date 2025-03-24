@@ -76,7 +76,7 @@ struct RegisterScreen: View {
                     .cornerRadius(15)
             }
             .navigationDestination(isPresented: $isShowHomeScreen) {
-                HomeScreen()
+                MainTabContainer(selectedTab: .home)
                     .navigationBarBackButtonHidden()
                     .environmentObject(profileViewModel)
             }
@@ -91,7 +91,6 @@ struct RegisterScreen: View {
                     .foregroundColor(.blue)
             }
             .padding(.top, 10)
-            
             Spacer(minLength: 30)
         }
         .padding()
